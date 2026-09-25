@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ProjectML – Learn Machine Learning by Building Real Projects</title>
+<meta name="description" content="AI-guided ML projects for college students. Build a job-ready portfolio with a 24/7 AI mentor.">
+<style>
+  :root{
+    --bg:#0a0e1a;
+    --bg-alt:#0f1424;
+    --card:#141a2e;
+    --accent:#6c5ce7;
+    --accent2:#00e5ff;
+    --text:#e8ebf5;
+    --text-dim:#9aa3c0;
+    --border:#232a45;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Segoe UI',Roboto,Poppins,Inter,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,h4{font-family:'Segoe UI',Poppins,Inter,Arial,sans-serif;font-weight:800;letter-spacing:-0.02em;}
+  a{color:inherit;text-decoration:none;}
+  img,svg{max-width:100%;display:block;}
+  .container{max-width:1180px;margin:0 auto;padding:0 24px;}
+  .btn{
+    display:inline-block;
+    padding:14px 28px;
+    border-radius:8px;
+    font-weight:700;
+    cursor:pointer;
+    border:none;
+    font-size:16px;
+    transition:transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+  }
+  .btn:hover{transform:translateY(-2px);}
+  .btn-primary{
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    color:#08090f;
+    box-shadow:0 8px 24px rgba(108,92,231,.35);
+  }
+  .btn-secondary{
+    background:transparent;
+    color:var(--text);
+    border:1.5px solid var(--border);
+  }
+  .btn-secondary:hover{border-color:var(--accent2);}
+  .section{padding:90px 0;}
+  .section-alt{background:var(--bg-alt);}
+  .eyebrow{
+    color:var(--accent2);
+    font-weight:700;
+    text-transform:uppercase;
+    font-size:13px;
+    letter-spacing:.12em;
+    margin-bottom:12px;
+  }
+  .section-title{font-size:clamp(28px,4vw,42px);margin-bottom:16px;}
+  .section-sub{color:var(--text-dim);max-width:620px;margin-bottom:48px;font-size:17px;}
+
+  /* Fade-in on scroll */
+  .fade-in{opacity:0;transform:translateY(24px);transition:opacity .7s ease, transform .7s ease;}
+  .fade-in.visible{opacity:1;transform:translateY(0);}
+
+  /* NAV */
+  nav{
+    position:sticky;top:0;z-index:1000;
+    background:rgba(10,14,26,.85);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-inner{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 24px;max-width:1180px;margin:0 auto;
+  }
+  .logo{font-size:22px;font-weight:800;}
+  .logo span{color:var(--accent2);}
+  .nav-links{display:flex;gap:32px;align-items:center;}
+  .nav-links a{color:var(--text-dim);font-weight:600;font-size:15px;transition:color .2s;}
+  .nav-links a:hover{color:var(--text);}
+  .nav-cta{display:none;}
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:8px;}
+  .hamburger span{width:24px;height:2px;background:var(--text);border-radius:2px;}
+  .mobile-menu{
+    display:none;flex-direction:column;gap:0;
+    background:var(--bg-alt);border-top:1px solid var(--border);
+  }
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{padding:16px 24px;border-bottom:1px solid var(--border);color:var(--text-dim);font-weight:600;}
+
+  /* HERO */
+  .hero{
+    padding:90px 0 60px;
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(108,92,231,.25), transparent 55%),
+      radial-gradient(ellipse at 90% 20%, rgba(0,229,255,.15), transparent 50%);
+  }
+  .hero-inner{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:center;}
+  .hero h1{font-size:clamp(34px,5.5vw,58px);line-height:1.08;margin-bottom:22px;}
+  .hero h1 .accent{background:linear-gradient(135deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .hero p{color:var(--text-dim);font-size:18px;margin-bottom:32px;max-width:520px;}
+  .hero-ctas{display:flex;gap:16px;flex-wrap:wrap;}
+
+  .mockup{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,.5);
+  }
+  .mockup-bar{
+    display:flex;gap:6px;padding:12px 16px;background:#0d1220;border-bottom:1px solid var(--border);
+  }
+  .mockup-bar span{width:10px;height:10px;border-radius:50%;background:#39405e;}
+  .mockup-body{display:grid;grid-template-columns:1.2fr 1fr;}
+  .mockup-code{
+    padding:20px;font-family:'Consolas',monospace;font-size:12.5px;color:#8fe3a3;
+    border-right:1px solid var(--border);
+    line-height:1.7;
+  }
+  .mockup-code .kw{color:#c792ea;}
+  .mockup-code .fn{color:#82aaff;}
+  .mockup-code .str{color:#c3e88d;}
+  .mockup-chat{padding:16px;display:flex;flex-direction:column;gap:10px;}
+  .chat-bubble{
+    background:#1c2340;border-radius:10px;padding:10px 12px;font-size:12.5px;color:var(--text-dim);
+  }
+  .chat-bubble.ai{border-left:3px solid var(--accent2);}
+  .chat-bubble.user{align-self:flex-end;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#08090f;}
+
+  /* PROBLEM */
+  .card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .card{
+    background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px;
+    transition:transform .25s ease, border-color .25s ease;
+  }
+  .card:hover{transform:translateY(-6px);border-color:var(--accent);}
+  .card-icon{
+    width:48px;height:48px;border-radius:10px;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:18px;
+  }
+  .card h3{font-size:19px;margin-bottom:10px;}
+  .card p{color:var(--text-dim);font-size:15px;}
+
+  /* STEPS */
+  .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
+  .step{position:relative;padding:28px 22px;background:var(--card);border:1px solid var(--border);border-radius:14px;}
+  .step-num{
+    font-size:36px;font-weight:800;
+    background:linear-gradient(135deg,var(--accent),var(--accent2));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+    margin-bottom:14px;
+  }
+  .step h4{font-size:16.5px;margin-bottom:8px;}
+  .step p{color:var(--text-dim);font-size:14px;}
+
+  /* FEATURES */
+  .feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .feature{display:flex;gap:16px;padding:22px;background:var(--card);border:1px solid var(--border);border-radius:12px;}
+  .feature-emoji{font-size:26px;flex-shrink:0;}
+  .feature h4{font-size:16px;margin-bottom:6px;}
+  .feature p{color:var(--text-dim);font-size:14px;}
+
+  /* PROJECTS carousel */
+  .carousel-wrap{position:relative;}
+  .carousel{
+    display:flex;gap:20px;overflow-x:auto;scroll-snap-type:x mandatory;padding-bottom:10px;
+    scrollbar-width:thin;scrollbar-color:var(--accent) var(--bg-alt);
+  }
+  .carousel::-webkit-scrollbar{height:6px;}
+  .carousel::-webkit-scrollbar-thumb{background:var(--accent);border-radius:4px;}
+  .proj-card{
+    min-width:280px;scroll-snap-align:start;
+    background:var(--card);border:1px solid var(--border);border-radius:14px;padding:22px;flex-shrink:0;
+  }
+  .proj-tag{
+    display:inline-block;font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;
+    background:rgba(0,229,255,.12);color:var(--accent2);margin-bottom:14px;text-transform:uppercase;
+  }
+  .proj-card h4{font-size:17px;margin-bottom:8px;}
+  .proj-card p{color:var(--text-dim);font-size:13.5px;margin-bottom:16px;}
+  .proj-card .btn{width:100%;text-align:center;padding:10px;font-size:14px;}
+
+  /* COMPARISON */
+  table{width:100%;border-collapse:collapse;background:var(--card);border-radius:12px;overflow:hidden;}
+  th,td{padding:16px 18px;text-align:left;border-bottom:1px solid var(--border);font-size:14.5px;}
+  th{background:#0d1220;color:var(--text-dim);font-size:13px;text-transform:uppercase;letter-spacing:.05em;}
+  td:not(:first-child),th:not(:first-child){text-align:center;}
+  .yes{color:#4ade80;font-weight:700;}
+  .no{color:#f87171;font-weight:700;}
+  tr:last-child td{border-bottom:none;}
+
+  /* TESTIMONIALS */
+  .testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .testi{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:26px;}
+  .testi-quote{font-size:15px;color:var(--text);margin-bottom:20px;}
+  .testi-person{display:flex;align-items:center;gap:12px;}
+  .avatar{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:700;color:#08090f;}
+  .testi-person .name{font-weight:700;font-size:14px;}
+  .testi-person .meta{font-size:12.5px;color:var(--text-dim);}
+
+  /* PRICING */
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;align-items:stretch;}
+  .price-card{
+    background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;
+    display:flex;flex-direction:column;
+  }
+  .price-card.featured{border:2px solid var(--accent);position:relative;transform:scale(1.03);}
+  .badge{
+    position:absolute;top:-14px;left:50%;transform:translateX(-50%);
+    background:linear-gradient(135deg,var(--accent),var(--accent2));color:#08090f;
+    font-size:12px;font-weight:800;padding:5px 14px;border-radius:20px;
+  }
+  .price-card h3{font-size:20px;margin-bottom:8px;}
+  .price{font-size:34px;font-weight:800;margin:14px 0;}
+  .price span{font-size:14px;color:var(--text-dim);font-weight:500;}
+  .price-card ul{list-style:none;margin:18px 0;flex-grow:1;}
+  .price-card li{padding:8px 0;color:var(--text-dim);font-size:14.5px;border-bottom:1px solid var(--border);}
+  .price-card li:before{content:"✓ ";color:var(--accent2);font-weight:700;}
+
+  /* FAQ */
+  .accordion{max-width:800px;}
+  .acc-item{border-bottom:1px solid var(--border);}
+  .acc-q{
+    padding:20px 0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;
+    font-weight:700;font-size:16px;
+  }
+  .acc-q .plus{font-size:22px;color:var(--accent2);transition:transform .3s ease;}
+  .acc-item.open .plus{transform:rotate(45deg);}
+  .acc-a{max-height:0;overflow:hidden;transition:max-height .3s ease;}
+  .acc-a p{color:var(--text-dim);padding-bottom:20px;font-size:14.5px;max-width:700px;}
+
+  /* FINAL CTA */
+  .final-cta{
+    text-align:center;
+    background:linear-gradient(135deg,rgba(108,92,231,.2),rgba(0,229,255,.15));
+    border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  }
+  .final-cta h2{font-size:clamp(26px,4vw,40px);margin-bottom:28px;}
+
+  /* FOOTER */
+  footer{background:var(--bg-alt);padding:60px 0 24px;border-top:1px solid var(--border);}
+  .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px;margin-bottom:40px;}
+  .footer-grid h4{font-size:15px;margin-bottom:16px;}
+  .footer-grid p, .footer-grid a{color:var(--text-dim);font-size:14px;}
+  .footer-grid ul{list-style:none;}
+  .footer-grid li{margin-bottom:10px;}
+  .footer-grid li a:hover{color:var(--accent2);}
+  .socials{display:flex;gap:14px;margin-top:16px;}
+  .socials a{
+    width:36px;height:36px;border-radius:50%;background:var(--card);border:1px solid var(--border);
+    display:flex;align-items:center;justify-content:center;font-size:15px;
+  }
+  .footer-bottom{
+    border-top:1px solid var(--border);padding-top:24px;
+    display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    color:var(--text-dim);font-size:13px;
+  }
+
+  /* STICKY MOBILE CTA */
+  .sticky-cta{
+    display:none;position:fixed;bottom:0;left:0;right:0;z-index:999;
+    padding:14px 20px;background:var(--bg-alt);border-top:1px solid var(--border);
+  }
+  .sticky-cta .btn{width:100%;text-align:center;}
+
+  /* WHATSAPP FLOAT */
+  .whatsapp-float{
+    position:fixed;bottom:90px;right:20px;z-index:998;
+    width:56px;height:56px;border-radius:50%;background:#25D366;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 8px 20px rgba(0,0,0,.4);font-size:26px;
+  }
+
+  /* MODAL */
+  .modal-overlay{
+    display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2000;
+    align-items:center;justify-content:center;padding:20px;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal{
+    background:var(--card);border:1px solid var(--border);border-radius:16px;padding:32px;
+    max-width:420px;width:100%;position:relative;
+  }
+  .modal h3{margin-bottom:6px;font-size:22px;}
+  .modal p.sub{color:var(--text-dim);font-size:14px;margin-bottom:24px;}
+  .modal-close{position:absolute;top:16px;right:20px;font-size:22px;cursor:pointer;color:var(--text-dim);background:none;border:none;}
+  .form-group{margin-bottom:16px;}
+  .form-group label{display:block;font-size:13px;color:var(--text-dim);margin-bottom:6px;font-weight:600;}
+  .form-group input,.form-group select{
+    width:100%;padding:12px 14px;border-radius:8px;border:1px solid var(--border);
+    background:#0d1220;color:var(--text);font-size:14px;
+  }
+  .form-group input:focus,.form-group select:focus{outline:none;border-color:var(--accent2);}
+  .modal .btn{width:100%;margin-top:8px;}
+  .form-success{display:none;text-align:center;padding:20px 0;}
+  .form-success .check{font-size:48px;margin-bottom:12px;}
+
+  @media(max-width:900px){
+    .hero-inner{grid-template-columns:1fr;}
+    .card-grid,.steps,.feature-grid,.testi-grid{grid-template-columns:repeat(2,1fr);}
+    .pricing-grid{grid-template-columns:1fr;}
+    .price-card.featured{transform:none;}
+    .footer-grid{grid-template-columns:1fr;}
+    .nav-links{display:none;}
+    .nav-cta{display:none !important;}
+    .hamburger{display:flex;}
+    .sticky-cta{display:block;}
+    body{padding-bottom:70px;}
+  }
+  @media(max-width:600px){
+    .card-grid,.steps,.feature-grid,.testi-grid{grid-template-columns:1fr;}
+    table{font-size:12px;}
+    th,td{padding:10px 8px;}
+    .section{padding:60px 0;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="logo">Project<span>ML</span></div>
+    <div class="nav-links">
+      <a href="#how">How It Works</a>
+      <a href="#projects">Projects</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </div>
+    <button class="btn btn-primary" style="padding:10px 22px;font-size:14px;" onclick="openModal()">Start Free</button>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#how" onclick="toggleMenu()">How It Works</a>
+    <a href="#projects" onclick="toggleMenu()">Projects</a>
+    <a href="#pricing" onclick="toggleMenu()">Pricing</a>
+    <a href="#faq" onclick="toggleMenu()">FAQ</a>
+    <a href="#" onclick="toggleMenu();openModal()" style="color:var(--accent2);">Start Free</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="container hero-inner">
+    <div class="fade-in">
+      <div class="eyebrow">AI-Powered ML Education</div>
+      <h1>Stop Watching ML. <span class="accent">Start Building It.</span></h1>
+      <p>Build real machine learning projects with a 24/7 AI mentor and graduate with a job-ready portfolio, not just course certificates.</p>
+      <div class="hero-ctas">
+        <button class="btn btn-primary" onclick="openModal()">Start Your First Project Free</button>
+        <button class="btn btn-secondary" onclick="openVideo()">▶ Watch 60-sec Demo</button>
+      </div>
+    </div>
+    <div class="fade-in mockup">
+      <div class="mockup-bar"><span></span><span></span><span></span></div>
+      <div class="mockup-body">
+        <div class="mockup-code">
+<span class="kw">import</span> pandas <span class="kw">as</span> pd<br>
+<span class="kw">from</span> sklearn.model_selection <span class="kw">import</span> train_test_split<br><br>
+df = pd.<span class="fn">read_csv</span>(<span class="str">"housing.csv"</span>)<br>
+X_train, X_test, y_train, y_test = <span class="fn">train_test_split</span>(<br>
+&nbsp;&nbsp;X, y, test_size=<span class="str">0.2</span><br>
+)<br><br>
+model.<span class="fn">fit</span>(X_train, y_train)<br>
+<span class="kw">print</span>(<span class="str">"R² Score:"</span>, model.<span class="fn">score</span>(X_test, y_test))
+        </div>
+        <div class="mockup-chat">
+          <div class="chat-bubble ai">Nice work! Your model is overfitting slightly — try adding regularization.</div>
+          <div class="chat-bubble user">How do I add L2 regularization here?</div>
+          <div class="chat-bubble ai">Use Ridge() instead of LinearRegression() — I'll show you the code 👇</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="eyebrow fade-in">The Problem</div>
+    <h2 class="section-title fade-in">Sound familiar?</h2>
+    <p class="section-sub fade-in">Most ML courses leave you with knowledge, not proof.</p>
+    <div class="card-grid">
+      <div class="card fade-in">
+        <div class="card-icon">😴</div>
+        <h3>Hours of lectures, nothing to show</h3>
+        <p>You've watched dozens of videos but have zero projects recruiters would care about.</p>
+      </div>
+      <div class="card fade-in">
+        <div class="card-icon">🧩</div>
+        <h3>Stuck on code, no one to help</h3>
+        <p>You hit an error at 11pm and there's no mentor, no TA, no one to unblock you.</p>
+      </div>
+      <div class="card fade-in">
+        <div class="card-icon">📜</div>
+        <h3>Certificates that don't get interviews</h3>
+        <p>Recruiters skip past PDF certificates — they want to see what you've actually built.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="how">
+  <div class="container">
+    <div class="eyebrow fade-in">How It Works</div>
+    <h2 class="section-title fade-in">From zero to deployed model</h2>
+    <p class="section-sub fade-in">Four steps between you and a portfolio that gets you hired.</p>
+    <div class="steps">
+      <div class="step fade-in"><div class="step-num">01</div><h4>Pick a real-world project</h4><p>Choose from curated, industry-relevant ML projects.</p></div>
+      <div class="step fade-in"><div class="step-num">02</div><h4>Build with your AI mentor</h4><p>Get guided step by step, from data cleaning to modeling.</p></div>
+      <div class="step fade-in"><div class="step-num">03</div><h4>Instant reviews, 24/7</h4><p>Get code feedback and doubt-clearing any time, day or night.</p></div>
+      <div class="step fade-in"><div class="step-num">04</div><h4>Deploy and showcase</h4><p>Ship your model and add it straight to your GitHub portfolio.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="eyebrow fade-in">Why ProjectML</div>
+    <h2 class="section-title fade-in">Everything you need to get job-ready</h2>
+    <div class="feature-grid">
+      <div class="feature fade-in"><div class="feature-emoji">🤖</div><div><h4>AI Mentor, 24/7</h4><p>Guidance and code feedback whenever you're stuck.</p></div></div>
+      <div class="feature fade-in"><div class="feature-emoji">🛠️</div><div><h4>Real, end-to-end projects</h4><p>Industry-grade projects, not toy datasets.</p></div></div>
+      <div class="feature fade-in"><div class="feature-emoji">💼</div><div><h4>Job-ready GitHub portfolio</h4><p>Deployed models recruiters can actually click into.</p></div></div>
+      <div class="feature fade-in"><div class="feature-emoji">🧭</div><div><h4>Structured learning paths</h4><p>From basics to deployment, no guesswork.</p></div></div>
+      <div class="feature fade-in"><div class="feature-emoji">💸</div><div><h4>Self-paced and affordable</h4><p>Learn on your schedule, at a student-friendly price.</p></div></div>
+      <div class="feature fade-in"><div class="feature-emoji">🎯</div><div><h4>Interview prep support</h4><p>Placement support to help convert projects into offers.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="projects">
+  <div class="container">
+    <div class="eyebrow fade-in">Sample Projects</div>
+    <h2 class="section-title fade-in">Build things you'd actually show a recruiter</h2>
+    <p class="section-sub fade-in">Swipe to explore a few of the projects inside ProjectML.</p>
+  </div>
+  <div class="container carousel-wrap">
+    <div class="carousel fade-in" id="projCarousel">
+      <div class="proj-card"><span class="proj-tag">Beginner · Regression</span><h4>House Price Prediction</h4><p>Skills: pandas, scikit-learn, feature engineering</p><button class="btn btn-secondary" onclick="openModal()">Preview</button></div>
+      <div class="proj-card"><span class="proj-tag">Intermediate · Classification</span><h4>Customer Churn Prediction</h4><p>Skills: EDA, logistic regression, model evaluation</p><button class="btn btn-secondary" onclick="openModal()">Preview</button></div>
+      <div class="proj-card"><span class="proj-tag">Intermediate · Recommenders</span><h4>Movie Recommendation System</h4><p>Skills: collaborative filtering, similarity metrics</p><button class="btn btn-secondary" onclick="openModal()">Preview</button></div>
+      <div class="proj-card"><span class="proj-tag">Advanced · Deep Learning</span><h4>Image Classifier with CNNs</h4><p>Skills: PyTorch/TensorFlow, CNNs, transfer learning</p><button class="btn btn-secondary" onclick="openModal()">Preview</button></div>
+      <div class="proj-card"><span class="proj-tag">Intermediate · NLP</span><h4>Sentiment Analysis on Reviews</h4><p>Skills: text preprocessing, embeddings, classification</p><button class="btn btn-secondary" onclick="openModal()">Preview</button></div>
+      <div class="proj-card"><span class="proj-tag">Advanced · NLP</span><h4>Resume Screener with NLP</h4><p>Skills: NER, text similarity, ranking models</p><button class="btn btn-secondary" onclick="openModal()">Preview</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="container">
+    <div class="eyebrow fade-in">Comparison</div>
+    <h2 class="section-title fade-in">ProjectML vs Traditional Courses</h2>
+    <div class="fade-in" style="overflow-x:auto;">
+      <table>
+        <tr><th>Feature</th><th>ProjectML</th><th>Traditional Courses</th></tr>
+        <tr><td>Hands-on projects</td><td class="yes">✓</td><td class="no">✗</td></tr>
+        <tr><td>24/7 help</td><td class="yes">✓</td><td class="no">✗</td></tr>
+        <tr><td>Portfolio output</td><td class="yes">✓</td><td class="no">✗</td></tr>
+        <tr><td>Deployment included</td><td class="yes">✓</td><td class="no">✗</td></tr>
+        <tr><td>Price</td><td class="yes">Affordable</td><td class="no">Expensive</td></tr>
+        <tr><td>Job readiness</td><td class="yes">High</td><td class="no">Low</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="eyebrow fade-in">Testimonials</div>
+    <h2 class="section-title fade-in">What students are building</h2>
+    <div class="testi-grid">
+      <div class="testi fade-in">
+        <p class="testi-quote">"I went from zero ML knowledge to deploying a churn prediction model in three weeks. The AI mentor unblocked me at 2am more times than I can count."</p>
+        <div class="testi-person"><div class="avatar">RK</div><div><div class="name">Riya Kapoor</div><div class="meta">VIT Vellore · Customer Churn Prediction</div></div></div>
+      </div>
+      <div class="testi fade-in">
+        <p class="testi-quote">"Recruiters actually asked about my GitHub portfolio during interviews — that never happened with my course certificates."</p>
+        <div class="testi-person"><div class="avatar">AS</div><div><div class="name">Aman Sharma</div><div class="meta">IIT Roorkee · Movie Recommendation System</div></div></div>
+      </div>
+      <div class="testi fade-in">
+        <p class="testi-quote">"The step-by-step structure made deep learning feel approachable for the first time. I built and deployed my first CNN in a weekend."</p>
+        <div class="testi-person"><div class="avatar">PN</div><div><div class="name">Priya Nair</div><div class="meta">NIT Trichy · Image Classifier with CNNs</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="pricing">
+  <div class="container">
+    <div class="eyebrow fade-in">Pricing</div>
+    <h2 class="section-title fade-in">Simple, student-friendly pricing</h2>
+    <div class="pricing-grid">
+      <div class="price-card fade-in">
+        <h3>Free</h3>
+        <div class="price">₹0</div>
+        <ul>
+          <li>1 starter project</li>
+          <li>Limited AI mentor</li>
+          <li>Community access</li>
+        </ul>
+        <button class="btn btn-secondary" onclick="openModal()">Start Free</button>
+      </div>
+      <div class="price-card featured fade-in">
+        <span class="badge">Most Popular</span>
+        <h3>Pro</h3>
+        <div class="price">₹499<span>/month</span></div>
+        <ul>
+          <li>All projects, unlimited access</li>
+          <li>Unlimited AI mentor</li>
+          <li>Portfolio & deployment tools</li>
+          <li>Interview prep support</li>
+        </ul>
+        <button class="btn btn-primary" onclick="openModal()">Go Pro</button>
+      </div>
+      <div class="price-card fade-in">
+        <h3>Campus / College</h3>
+        <div class="price">Custom</div>
+        <ul>
+          <li>Bulk licensing for colleges</li>
+          <li>Dedicated onboarding</li>
+          <li>Placement partnerships</li>
+        </ul>
+        <button class="btn btn-secondary" onclick="openModal()">Partner With Us</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="faq">
+  <div class="container">
+    <div class="eyebrow fade-in">FAQ</div>
+    <h2 class="section-title fade-in">Got questions?</h2>
+    <div class="accordion fade-in">
+      <div class="acc-item">
+        <div class="acc-q" onclick="toggleAcc(this)"><span>Do I need prior ML experience?</span><span class="plus">+</span></div>
+        <div class="acc-a"><p>No. ProjectML is designed for beginners — your AI mentor adapts guidance to your current skill level.</p></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-q" onclick="toggleAcc(this)"><span>How does the AI mentor work?</span><span class="plus">+</span></div>
+        <div class="acc-a"><p>Your AI mentor reviews your code, answers questions, and guides you through each project step in real time, 24/7.</p></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-q" onclick="toggleAcc(this)"><span>Will I get a certificate?</span><span class="plus">+</span></div>
+        <div class="acc-a"><p>Yes — but more importantly, you'll graduate with deployed, working projects on your GitHub.</p></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-q" onclick="toggleAcc(this)"><span>Can my college partner with you?</span><span class="plus">+</span></div>
+        <div class="acc-a"><p>Yes, we offer bulk licensing and dedicated support for colleges. Reach out via the Campus plan.</p></div>
+      </div>
+      <div class="acc-item">
+        <div class="acc-q" onclick="toggleAcc(this)"><span>Is there placement support?</span><span class="plus">+</span></div>
+        <div class="acc-a"><p>Pro members get interview prep and placement support alongside their project work.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section final-cta">
+  <div class="container fade-in">
+    <h2>Your first ML project is 10 minutes away.</h2>
+    <button class="btn btn-primary" onclick="openModal()">Start Free Now</button>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div class="logo" style="margin-bottom:14px;">Project<span>ML</span></div>
+        <p>Build real ML projects with a 24/7 AI mentor and graduate with a job-ready portfolio.</p>
+        <div class="socials">
+          <a href="#" aria-label="Instagram">📷</a>
+          <a href="#" aria-label="LinkedIn">in</a>
+          <a href="#" aria-label="YouTube">▶</a>
+          <a href="#" aria-label="Discord">💬</a>
+        </div>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:hello@projectml.in">hello@projectml.in</a></li>
+          <li><a href="https://wa.me/919999999999" target="_blank" rel="noopener">+91 99999 99999 (WhatsApp)</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="year"></span> ProjectML. All rights reserved.</span>
+      <span>Made for students, by builders.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="sticky-cta">
+  <button class="btn btn-primary" onclick="openModal()">Start Free</button>
+</div>
+
+<a class="whatsapp-float" href="https://wa.me/919999999999" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">💬</a>
+
+<div class="modal-overlay" id="signupModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div id="formView">
+      <h3>Start Your First Project Free</h3>
+      <p class="sub">No credit card needed. Takes 2 minutes.</p>
+      <form id="signupForm" onsubmit="submitForm(event)">
+        <div class="form-group">
+          <label for="fname">Full Name</label>
+          <input type="text" id="fname" required placeholder="Your name">
+        </div>
+        <div class="form-group">
+          <label for="femail">Email</label>
+          <input type="email" id="femail" required placeholder="you@college.edu">
+        </div>
+        <div class="form-group">
+          <label for="fcollege">College</label>
+          <input type="text" id="fcollege" required placeholder="Your college name">
+        </div>
+        <div class="form-group">
+          <label for="fyear">Year of Study</label>
+          <select id="fyear" required>
+            <option value="">Select year</option>
+            <option>1st Year</option>
+            <option>2nd Year</option>
+            <option>3rd Year</option>
+            <option>4th Year</option>
+            <option>Postgraduate</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Free Account</button>
+      </form>
+    </div>
+    <div class="form-success" id="formSuccess">
+      <div class="check">✅</div>
+      <h3>You're in!</h3>
+      <p class="sub">Check your email for your first project instructions.</p>
+      <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="videoModal">
+  <div class="modal" style="max-width:640px;padding:16px;">
+    <button class="modal-close" onclick="closeVideo()">×</button>
+    <div style="position:relative;padding-top:56.25%;border-radius:10px;overflow:hidden;">
+      <iframe id="ytFrame" style="position:absolute;top:0;left:0;width:100%;height:100%;border:0;"
+        src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Year in footer
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Mobile menu
+  function toggleMenu(){
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+
+  // Signup modal
+  function openModal(){
+    document.getElementById('signupModal').classList.add('open');
+    document.getElementById('formView').style.display='block';
+    document.getElementById('formSuccess').style.display='none';
+    document.getElementById('signupForm').reset();
+  }
+  function closeModal(){
+    document.getElementById('signupModal').classList.remove('open');
+  }
+  function submitForm(e){
+    e.preventDefault();
+    document.getElementById('formView').style.display='none';
+    document.getElementById('formSuccess').style.display='block';
+  }
+
+  // Video modal
+  const YOUTUBE_ID = 'dQw4w9WgXcQ'; // replace with real pitch video ID
+  function openVideo(){
+    document.getElementById('ytFrame').src = 'https://www.youtube.com/embed/' + YOUTUBE_ID + '?autoplay=1';
+    document.getElementById('videoModal').classList.add('open');
+  }
+  function closeVideo(){
+    document.getElementById('videoModal').classList.remove('open');
+    document.getElementById('ytFrame').src = '';
+  }
+
+  // Close modals on overlay click
+  document.querySelectorAll('.modal-overlay').forEach(ov=>{
+    ov.addEventListener('click', e=>{
+      if(e.target === ov){
+        ov.classList.remove('open');
+        if(ov.id === 'videoModal') document.getElementById('ytFrame').src = '';
+      }
+    });
+  });
+  document.addEventListener('keydown', e=>{
+    if(e.key === 'Escape'){
+      document.querySelectorAll('.modal-overlay.open').forEach(ov=>ov.classList.remove('open'));
+      document.getElementById('ytFrame').src = '';
+    }
+  });
+
+  // Accordion
+  function toggleAcc(el){
+    const item = el.parentElement;
+    const answer = item.querySelector('.acc-a');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.acc-item').forEach(i=>{
+      i.classList.remove('open');
+      i.querySelector('.acc-a').style.maxHeight = null;
+    });
+    if(!isOpen){
+      item.classList.add('open');
+      answer.style.maxHeight = answer.scrollHeight + 'px';
+    }
+  }
+
+  // Fade-in on scroll
+  const observer = new IntersectionObserver((entries)=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.12});
+  document.querySelectorAll('.fade-in').forEach(el=>observer.observe(el));
+</script>
+
+</body>
+</html>
